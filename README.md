@@ -2,17 +2,58 @@
 
  ## 5 skirtingų funkcijų pavyzdžiai:
 
-* max_size → funkcija, grąžinanti didžiausią įmanoma elementų skaičių, kurį gali savyje laikyti vektorius. Funkcijai parametrai nėra paduodami.
+* resize → funkcija, keičianti vektoriaus konteinerio dydi iki nurodyto elemento n. 
+   * jei n yra mažiau už esamą vektoriaus dydį - šis yra sumažinamas iki pirmųjų n elementų, o elementai esantys už n yra pašalinami juos sunaikinant.
+   * jei n yra daugiau už esamą vektoriaus dydį - būsimi elementai pridedami vektoriaus pabaigoje.
 ``` ruby
-template<typename T>
-typename Vector<T>::size_type Vector<T>::max_size() const noexcept 
+template <typename T>
+void Vector<T>::resize(int n, T val)
 {
-    double imin = std::numeric_limits<T>::min();
-    double imax = std::numeric_limits<T>::max();
-    double sum = (imax - imin);
-    return sum/4;
+    if (n > size()) 
+    {
+        int o = size();
+        int z = n - size();
+        avail += z;
+
+        for (int i = o; i < n; i++) 
+        {
+            data1[i] = val;
+        }
+    }
+
+    else resize(n);
+}
+
+template <typename T>
+void Vector<T>::resize(int n) 
+{
+    int k = 0;
+    if(n < size())
+    {
+        for (int i = n; i < size(); i++) 
+        {
+            data1[i] = 0;
+            k++;
+        }
+        avail -= k;
+    }
+
+    else 
+    {
+        int o = size();
+        int z = n - size();
+        avail += z;
+
+        for (int i = o; i < n; i++) 
+        {
+            data1[i] = 0;
+        }
+    }
 }
 ```
+Pirmosios funkcijos atveju jai yra paduodamos dvi reikšmės: n nurodo skaičių, iki kurio bus padidintas vektoriaus dydis, val nurodo, kokiomis reikšmėmis bus užpildomi naujai sukurti elementai.
+
+Antrosios funkcijos atveju jai yra paduodama viena n reikšmė, nurodanti naują vektoriaus konteinerio dydį. 
 
 * reserve → funkcija, padidinanti naudojamo vektoriaus talpą (capacity) skaičiumi n. Jeigu paduodamas n skaičius yra didesnis negu esama vekroiaus talpa (capacity), funkcijos metu vyksta naujos vietos alokavimas (allocation) bei elementų perkopijavimas taip padidinant vektoriaus talpą (capacity) iki nurodyto n dydžio. Funkcijai paduodamas norimo dydčio rodiklis. 
 ``` ruby
