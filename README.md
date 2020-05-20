@@ -24,8 +24,36 @@ void Vector<T>::resize(int n, T val)
     else resize(n);
 }
 
+template <typename T>
+void Vector<T>::resize(int n) 
+{
+    int k = 0;
+    if(n < size())
+    {
+        for (int i = n; i < size(); i++) 
+        {
+            data1[i] = 0;
+            k++;
+        }
+        avail -= k;
+    }
+
+    else 
+    {
+        int o = size();
+        int z = n - size();
+        avail += z;
+
+        for (int i = o; i < n; i++) 
+        {
+            data1[i] = 0;
+        }
+    }
+}
+
 ```
-Funkcijai paduodamos dvi reikšmės: n nurodo skaičių, iki kurio bus padidintas vektoriaus dydis, val nurodo, kokiomis reikšmėmis bus užpildomi naujai sukurti elementai.
+Pirmuoju atveju funkcijai paduodamos dvi reikšmės: n nurodo skaičių, iki kurio bus padidintas vektoriaus dydis, val nurodo, kokiomis reikšmėmis bus užpildomi naujai sukurti elementai.
+Antruoju atveju funkcijai paduodama n reikšmė, nurodanti naują vektoriaus dydį.
 
 
 * reserve → funkcija, padidinanti naudojamo vektoriaus talpą (capacity) skaičiumi n. Jeigu paduodamas n skaičius yra didesnis negu esama vekroiaus talpa (capacity), funkcijos metu vyksta naujos vietos alokavimas (allocation) bei elementų perkopijavimas taip padidinant vektoriaus talpą (capacity) iki nurodyto n dydžio. Funkcijai paduodamas norimo dydčio rodiklis. 
